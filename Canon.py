@@ -50,4 +50,15 @@ class Shell(GameObject):
                 self.vel[i] = -int(self.vel[i] * refl_ort)
                 self.vel[1-i] = int(self.vel[1-i] * refl_par)
 
-    
+    def move(self, time=1, grav=0):
+        """
+        Moves the ball according to it's velocity and time step.
+        Changes the ball velocity due to gravitational force.
+        """
+        self.vel[1] += grav
+        for i in range(2):
+            self.coord[i] += time * self.vel[i]
+        self.check_corners()
+        if self.vel[0]**2 + self.vel[1]**2 < 2**2 and self.coord[1] > SCREEN_SIZE[1] - 2*self.rad:
+            self.is_alive = False
+            
