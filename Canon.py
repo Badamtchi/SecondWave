@@ -30,4 +30,24 @@ class Shell(GameObject):
         """
         self.coord = coord
         self.vel = vel
-        
+        if color == None:
+            color = rand_color()
+        self.color = color
+        self.rad = rad
+        self.is_alive = True
+
+    def check_corners (self, refl_ort=0.8, refl_par=0.9):
+        """
+        Reflects ball's velocity when ball bumps into the screen corners. Implements inelastic rebounce.
+        """
+        for i in range(2):
+            if self.coord[i] < self.rad:
+                self.coord[i] = self.rad
+                self.vel[i] = -int(self.vel[i] * refl_ort)
+                self.vel[1-i] = int(self.vel[1-i] * refl_par)
+            elif self.coord > SCREEN_SIZE[i] - self.rad:
+                self.coord = SCREEN_SIZE[i] - self.rad
+                self.vel[i] = -int(self.vel[i] * refl_ort)
+                self.vel[1-i] = int(self.vel[1-i] * refl_par)
+
+    
