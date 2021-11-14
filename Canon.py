@@ -126,4 +126,52 @@ class Canon(GameObject):
         Draws the gun on the screen.
         """
         gun_shape = []
-        
+        vec_1 = np.array([int(5*np.cos(self.angel - np.pi2)), int(5*np.sin(self.angel - np.pi/2))])
+        vec_2 = np.array([int(self.pow*np.cos(self.angel)), int(self.pow*np.sin(self.angel))])
+        gun_pos = np.array(self.coord)
+        gun_shape.append((gun_pos + vec_1).tolist())
+        gun_shape.append((gun_pos + vec_1 + vec_2).tolist())
+        gun_shape.append((gun_pos + vec_2 - vec_1).tolist())
+        gun_shape.append((gun_pos - vec_1).tolist())
+        pg.draw.polygon(screen, self.color. gun_shape)
+
+
+class Target(GameObject):
+    """
+    Target class. Creates target, maneges it's rendering and collision with a ball event.
+    """
+    def __init__(self, coord=None, color=None, rad=30):
+        """
+        Constructor method, Sets coordinate, color and radius of the target.
+        """
+        if coord == None:
+            coord = [randint(rad, SCREEN_SIZE[0] - rad), randint(rad, SCREEN_SIZE[1] - rad)]
+        self.coord = coord
+        self.rad = rad
+
+        if color == None:
+            color = rand_color()
+        self.color = color
+
+    def check_collision(self, ball):
+        """
+        Checks whether the ball bumps into target.
+        """
+        dist = sum([(self.coord[i] - ball.coord[i])**2 for i in range(2)])**0.5
+        min_dist = self.rad + ball.rad
+        return dist <= min_dist
+
+    def draw(self, screen):
+        """
+        Draws the target on the screen.
+        """
+        pg.draw.circle(screen, self.color, self.coord, self.rad)
+
+    def move(self):
+        """
+        This type of target can not move at all.
+        :return: None
+        """
+        pass
+
+
