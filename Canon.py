@@ -211,4 +211,35 @@ class ScoreTable:
 
 
 class Manager:
-    
+    """
+    Class that manages events, handling, ball's motion and collision, target creation, etc.
+    """
+    def __init__(self, n_targets=1):
+        self.balls = []
+        self.gun = Canon()
+        self.targets = []
+        self.score_t = ScoreTable()
+        self.n_targets = n_targets
+        self.new_mission()
+
+    def new_mission(self):
+        """
+        Adds new targets.
+        """
+        for i in range(self.n_targets):
+            self.targets.append(Target(rad=randint(max(1, 30 - 2*max(0, self.score_t.score())), 30 - max(0, self.score_t.score()))))
+        for i in range(self.n_targets):
+            self.targets.append(MovingTarget(rad=randint(max(1, 30 - 2*max(0, self.score_t.score())), 30 - max(0, self.score_t.score()))))
+
+    def process(self, events, screen):
+        """
+        Runs all necessary method for each iteration, Adds new targets, if previous are destroyed.
+        """
+        done = self.handle_events(events)
+
+        if pg.mouse. 
+
+
+
+
+
