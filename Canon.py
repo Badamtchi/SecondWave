@@ -61,4 +61,69 @@ class Shell(GameObject):
         self.check_corners()
         if self.vel[0]**2 + self.vel[1]**2 < 2**2 and self.coord[1] > SCREEN_SIZE[1] - 2*self.rad:
             self.is_alive = False
-            
+
+    def draw(self, screen):
+        """
+        Draws the ball on appropriate surface.
+        """
+        pg.draw.circle(screen, self.color, self.coord, self.rad)
+
+class Canon(GameObject):
+    """
+    Canon Class, Manages it's rendering, movement and striking.
+    """
+    def __init__(self, coord=[30, SCREEN_SIZE[1]//2], angle=0, max_pow=50, min_pow=10, color=RED):
+        """
+        Coordinator method, Sets coordinate, direction, minimun and maximum power and color of the gun.
+        """
+        self.coord = coord
+        self.angel = angle
+        self.max_pow = max_pow
+        self.min_pow = min_pow
+        self.color = color
+        self.active = False
+        self.pow = min_pow
+
+    def activate(self):
+        """
+        Activates gun's charge.
+        """
+        self.active = True
+
+    def gain(self, inc=2):
+        """
+        Increase current gun charge power.
+        """
+        if self.active and self.pow < self.max_pow:
+            self.pow += inc
+
+    def strike(self):
+        """
+        Created ball, according to gun's direction and current charge power.
+        """
+        vel = self.pow
+        angle = self.angel
+        ball = Shell(list(self.coord), [int(vel * np.cos(angle)), int(vel * np.sin(angle))])
+        self.pow = self.min_pow
+        self.active = False
+        return ball
+
+    def set_angle(self, target_pos):
+        """
+        Sets gun's direction to target position.
+        """
+        self.angel = np.arctan2(target_pos[1] - self.coord[1], target_pos[0], - self.coord[0])
+
+    def move(self, inc):
+        """
+        Changes vertival positin of the gun.
+        """
+        if (self.coord[1] > 30 or inc > 0) and (self.coord[1] < SCREEN_SIZE[1] - 30 or inc < 0):
+            self.coord[1] += inc
+
+    def draw(self, screen):
+        """
+        Draws the gun on the screen.
+        """
+        gun_shape = []
+        
