@@ -307,7 +307,16 @@ class Manager:
         targets_c = []
         for i, ball in enumerate(self.balls):
             for j, target in enumerate(self.targets):
-                
+                if target.chech_collision(ball):
+                    collisions.append([i, j])
+                    targets_c.append(j)
+        targets_c.sort()
+        for j in reversed(targets_c):
+            self.score_t.t_destr += 1
+            self.targets.pop(j)
+
+
+
 
 
 
