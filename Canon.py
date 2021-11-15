@@ -245,7 +245,7 @@ class Manager:
         self.collide()
         self.draw(screen)
 
-        if len(self.targets) == 0 and len(self.balls) ==0:
+        if len(self.targets) == 0 and len(self.balls) == 0:
             self.new_mission()
 
         return done
@@ -254,7 +254,45 @@ class Manager:
         """
         Handles events from keyboard, mouse, etc.
         """
-        
+        done = False
+
+        for event in events:
+            if event.type == pg.QUIT:
+                done = True
+            elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_UP:
+                    self.gun.move(-5)
+                elif event.key == pg.K_DOWN:
+                    self.gun.move(5)
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    self.gun.activate()
+            elif event.type == pg.MOUSEBUTTONUP:
+                if event.button == 1:
+                    self.balls.append(self.gun.strike())
+                    self.score_t.b_used += 1
+        return done
+
+    def draw(self, screen):
+        """
+        Runs balls, guns, targets and score table's drawing method.
+        """
+        for ball in self.balls:
+            ball.draw(screen)
+        for target in self.targets:
+            target.draw(screen)
+        self.gun.draw(screen)
+        self.score_t.draw(screen)
+
+    def move(self):
+        """
+        Runs balls and gun's movement method, removes dead balls.
+        """
+        dead_balls = []
+        for i, ball in enumerate(self.balls):
+            ball.move(grav=2)
+            if not ball.is_alive:
+                
 
 
 
