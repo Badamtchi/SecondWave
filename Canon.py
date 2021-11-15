@@ -237,7 +237,24 @@ class Manager:
         """
         done = self.handle_events(events)
 
-        if pg.mouse. 
+        if pg.mouse.get_focuced():
+            mouse_pos = pg.mouse.get_pos()
+            self.gun.set_angle(mouse_pos)
+
+        self.move()
+        self.collide()
+        self.draw(screen)
+
+        if len(self.targets) == 0 and len(self.balls) ==0:
+            self.new_mission()
+
+        return done
+
+    def handle_events(self, events):
+        """
+        Handles events from keyboard, mouse, etc.
+        """
+        
 
 
 
