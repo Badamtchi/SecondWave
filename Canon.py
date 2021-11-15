@@ -316,9 +316,21 @@ class Manager:
             self.targets.pop(j)
 
 
+screen = pg.display.set_mode(SCREEN_SIZE)
+pg.display.set_caption("My first project with Khiryanov")
+
+done = False
+clock = pg.time.Clock()
+
+mgr = Manager(n_targets=3)
+
+while not done:
+    clock.tick(15)
+    screen.fill(BLACK)
+
+    done = mgr.process(pg.event.get(), screen)
+
+    pg.display.flip()
 
 
-
-
-
-
+pg.quit()
