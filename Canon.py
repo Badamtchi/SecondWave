@@ -292,6 +292,21 @@ class Manager:
         for i, ball in enumerate(self.balls):
             ball.move(grav=2)
             if not ball.is_alive:
+                dead_balls.append(i)
+        for i in reversed(dead_balls):
+            self.balls.pop(i)
+        for i, target in enumerate(self.targets):
+            target.move()
+        self.gun.gain()
+
+    def collide(self):
+        """
+        Checks whether balls bump into targets, sets balls alive trigger.
+        """
+        collisions = []
+        targets_c = []
+        for i, ball in enumerate(self.balls):
+            for j, target in enumerate(self.targets):
                 
 
 
