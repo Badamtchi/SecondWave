@@ -3,6 +3,8 @@ import random
 # lets creat a board object to represent the minesweeper game
 # this is that we can just say "create a new board object", or
 # "dig here", or "render this game for this object"
+
+
 class Board:
     def __init__(self, dim_size, num_bombs):
         # let's keep track of these parameters. they will be helpful later
@@ -56,18 +58,58 @@ class Board:
     def get_num_neighboring_bombs(self, row, col):
         # let's iterate through each of the neighboring positions and sum number of bombs
         num_neighboring_bombs = 0
-        for r in range(max(0, row-1), min(self.dim_size, (row+1)+1)):
-            for c in range(max(0, col-1), min(self.dim_size, (col+1)+1)):
+        for r in range(max(0, row-1), min(self.dim_size-1, row+1)+1):
+            for c in range(max(0, col-1), min(self.dim_size-1, col+1)+1):
                 if r == row and c == col:
                     continue
                 if self.board[r][c] == '*':
                     num_neighboring_bombs += 1
         return num_neighboring_bombs
 
+    def dig(self):
+        # dig at the location!
+        # return True if successful dig, False if bomb dug
+
+        # a few scenarios:
+        # hit a bomb -> game over
+        # dig at location with neighboring bombs -> finish digging
+        # dig at location with no neighboring bombs -> recursively dig neighbors
+
+        self.dug.add((row, col))  # keeping track that we dug here
+
+        if self.board[row][col] == '*':
+            return False
+        elif self.board[row][col] > 0:
+            return True
+
+        # self.borad[row][col] == 0
+        for r in range(max(0, row-1), min(self.dim_size-1, row+1)+1):
+            for c in range(max(0, col-1), min(self.dim_size-1, col+1)+1):
+                if (r, c) in self.dug:
+                    continue  # don't dig where you've already dug
+                self.dig(r, c)
+        # if our initial dig didn't hit a bomb, we *shouldn't* hit a bomb here
+        return True
+
+    def __str__(self):
+        # this is a magic function where if you call print on this object,
+        # it will print out what this function returns!
+        # return a string that shows the board to the player
+
+        # first let's create a new array the represent what the use would see
+        visible_board = [[None for _ in range(self.dim_size)] for _ in range(self.dim_size)]
+        for row in range(self.dim_size):
+            for col in range(self.dim_size):
+                if (row, col) in self.dig:
+                    visible_board[row][col] = str(self.board[row][col])
+                else:
+                    visible_board[row][col] = ' '
 
 # play the game
 def game(dim_size=10, num_bombs=10):
     # Step 1: creat the board and plant the bombs
+    board = Board(dim_size, num_bombs)
+
     # Step 2: show the board to user and ask where the want to dig
     # Step 3: if the location is the bomb, show game over message
     # Step 3b: if location is not a bomb, dig recursively until each square is a least
