@@ -34,7 +34,7 @@ class Board:
         # plant a bomb
         bombs_planted = 0
         while bombs_planted < self.num_bombs:
-            loc = random.randint(0, self.dim_size**2 - 1)
+            loc = random.randint(0, self.dim_size ** 2 - 1)
             row = loc // self.dim_size  # we want the number of times dim_size goes into loc to tell us
             col = loc % self.dim_size   # we want the remainder to tell us what index in that row to locate
 
@@ -103,11 +103,10 @@ class Board:
         for row in range(self.dim_size):
             for col in range(self.dim_size):
                 if (row, col) in self.dug:
-                    visible_board[row][col] = str(self.board[row][col])
+                    visible_bord[row][col] = str(self.board[row][col])
                 else:
-                    visible_board[row][col] = ' '
+                    visible_bord[row][col] = ' '
         # put this together in a string
-
 # play the game
 
 
