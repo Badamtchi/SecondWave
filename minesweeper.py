@@ -1,4 +1,5 @@
 import random
+import re
 
 # lets creat a board object to represent the minesweeper game
 # this is that we can just say "create a new board object", or
@@ -28,7 +29,7 @@ class Board:
         # but since we have a 2-D board, list of lists is most natural)
 
         # generate a new board
-        board = [[none for _ in range(self.dim_size)] in range(self.dim_size)]
+        board = [[None for _ in range(self.dim_size)] in range(self.dim_size)]
 
         # plant a bomb
         bombs_planted = 0
@@ -43,6 +44,7 @@ class Board:
 
             board[row][col] = '*'  # plant the bomb
             bombs_planted += 1
+        return board
 
     def assign_value_to_borad(self):
         # now that we have the bombs planted, let's assign a number 0-8 for all the empty spaces, which
@@ -66,7 +68,7 @@ class Board:
                     num_neighboring_bombs += 1
         return num_neighboring_bombs
 
-    def dig(self):
+    def dig(self, row, col):
         # dig at the location!
         # return True if successful dig, False if bomb dug
 
@@ -100,19 +102,48 @@ class Board:
         visible_board = [[None for _ in range(self.dim_size)] for _ in range(self.dim_size)]
         for row in range(self.dim_size):
             for col in range(self.dim_size):
-                if (row, col) in self.dig:
+                if (row, col) in self.dug:
                     visible_board[row][col] = str(self.board[row][col])
                 else:
                     visible_board[row][col] = ' '
+        # put this together in a string
 
 # play the game
-def game(dim_size=10, num_bombs=10):
+
+
+def play(dim_size=10, num_bombs=10):
     # Step 1: creat the board and plant the bombs
     board = Board(dim_size, num_bombs)
 
     # Step 2: show the board to user and ask where the want to dig
     # Step 3: if the location is the bomb, show game over message
     # Step 3b: if location is not a bomb, dig recursively until each square is a least
-    #         next to a bomb
+    #          next to a bomb
     # Step 4: repeat steps 2 and 3a/b until there are no more places to dig -> VICTORY!
-    pass
+    safe = True
+    while len(board.dug) < board.dim_size ** 2 - num_bombs:
+        print(board)
+        user_input = re.split(',(\\s)*', input("Where would you like to dig? Input as roe,col: "))
+        row, col = int(user_input[0]), int(user_input[-1])
+        if row < 0 or row >= board.dim_size or col < 0 or col >= board.dim_size:
+            print('Invalid location. Try again...')
+            continue
+
+        # if it's valid, we dig
+        safe = board.dig(row, col)
+        if not safe:
+            # dug a bomb ahhhhhhhhh
+            break # game over rip
+
+    # 2 ways to end loop, let's check which one
+    if safe:
+        print('CONGRATULATIONS!!!! YOU ARE VICTORIES!!')
+    else:
+        print('SORRY!!! GAME OVER!')
+        # let's reveal the whole board!
+        board.dug = [(r, c) for r in range(board.dim_size) for c in range(board.dim_size)]
+        print(board)
+
+
+if __name__ == "__main__":
+    play()
