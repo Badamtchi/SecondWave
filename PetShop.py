@@ -51,22 +51,22 @@ def main():
     inv = Inventory()
 
     while True:
-        action = input('Action:  add, remove, list, save, exit: ').lower
+        action = input('Action:  add, remove, list, save, exit: ')
         if action == 'exit':
             break
-        elif action == 'add' or action == 'remove':
+        if action == 'add' or action == 'remove':
             key = input('Enter an animal: ')
             qty = int(input('Enter the quantity: '))
             if action == 'add':
                 inv.add(key, qty)
             if action == 'remove':
                 inv.remove(key, qty)
-        elif action == 'list':
+        if action == 'list':
             inv.display()
-        elif action == 'save':
+        if action == 'save':
             inv.save()
         
-        inv.save()
+    inv.save()
 
 
 if __name__ == "__main__":
