@@ -46,3 +46,28 @@ class Inventory:
         with open('inventory.txt', 'r') as f:
             self.pets = json.load(f)
         print('Loaded!')
+
+def main():
+    inv = Inventory()
+
+    while True:
+        action = input('Action:  add, remove, list, save, exit: ').lower
+        if action == 'exit':
+            break
+        elif action == 'add' or action == 'remove':
+            key = input('Enter an animal: ')
+            qty = int(input('Enter the quantity: '))
+            if action == 'add':
+                inv.add(key, qty)
+            if action == 'remove':
+                inv.remove(key, qty)
+        elif action == 'list':
+            inv.display()
+        elif action == 'save':
+            inv.save()
+        
+        inv.save()
+
+
+if __name__ == "__main__":
+    main()
