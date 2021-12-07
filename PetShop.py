@@ -29,10 +29,20 @@ class Inventory:
         print(f'Removed {qty} {key}: total = {self.pets[key]}')
 
     def display(self):
-        pass
-
+        for key, value in self.pets.items():
+            print(f'{key} = {value}')
+    
     def save(self):
-        pass
+        print('Saving Inventory')
+        with open('inventory.txt', 'w') as f:
+            json.dump(self.pets, f)
+        print('Saved!')
 
     def load(self):
-        pass
+        print('Loading inventory')
+        if not os.path.exists('inventory.txt'):
+            print('Skipping, nothing to load')
+            return
+        with open('inventory.txt', 'r') as f:
+            self.pets = json.load(f)
+        print('Loaded!')
