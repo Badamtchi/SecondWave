@@ -17,7 +17,35 @@ def get_input():
 
     stats['path'] = ret
 
-#Scan the path recursively
+# Scan the path recursively
 def scan(path):
     global stats
-    
+    print('Scaning: ' + path)
+
+    for root, dirs, files in os.walk(path, onerror=None, followlinks=False):
+        stats['folders'] += len(dirs)
+        stats['files'] += len(files)
+        for name in files:
+            fullname = os.path.join(root, name)
+            size = os.path.getsize(fullname)
+            stats['size'] += size
+
+# Display
+def display():
+    global stats
+    print('Results:')
+    for k, v in stats.items():
+        print(f'{k} = {v}')
+
+
+# Main Function
+def main():
+    global stats
+    get_input()
+    scan(stats['path'])
+    display()
+
+
+if __name__ == '__main__':
+    main()
+
