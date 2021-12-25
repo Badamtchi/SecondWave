@@ -16,3 +16,15 @@ class FIFOOrderingStrategy(TicketOrderingStrategy):
     def create_ordering(self, list: List[SupportTicket]) -> List[SupportTicket]:
         return list.copy()
 
+class FILOOrderingStrategy(TicketOrderingStrategy):
+    def create_ordering(self, list: List[SupportTicket]) -> List[SupportTicket]:
+        list_copy = list.copy()
+        list_copy.reverse()
+        return list_copy
+
+class RandomOrderingStrategy(TicketOrderingStrategy):
+    def create_ordering(self, list: List[SupportTicket]) -> List[SupportTicket]:
+        list_copy = list.copy()
+        random.shuffle(list_copy)
+        return list_copy
+
