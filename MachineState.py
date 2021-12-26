@@ -17,6 +17,7 @@ class SadState(State):
         print("I am in Sad state!")
 
 
+
 class Event(ABC):
 
     @abstractmethod
@@ -33,3 +34,25 @@ class RecvMoney(Event):
     def in_event(self):
         print("I got money))")
 
+
+class StateMachine():
+
+    def __init__(self):
+        self.currstate = HappyState()
+
+    def current_state(self):
+        print(self.currstate.in_state())
+    
+    def recv_event(self, event):
+        if isinstance(event, LostMoney):
+            self.currstate = SadState()
+        else:
+            self.currstate = HappyState()
+
+
+sm = StateMachine()
+sm.current_state()
+sm.recv_event(LostMoney())
+sm.current_state()
+sm.recv_event(RecvMoney())
+sm.current_state()
