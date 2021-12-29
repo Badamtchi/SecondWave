@@ -26,3 +26,14 @@ class TradingStrategy(ABC):
     def should_sell(self, prices: list[float], params: StrategyParameters) -> bool:
         """Whether you should sell this coin, given the prices."""
 
+class AverageTradingStrategy(TradingStrategy):
+    """Trading strategy based on price averages."""
+
+    def should_buy(self, prices: list[float], params: StrategyParameters) -> bool:
+        list_window = prices[-params.window_size :]
+        return prices[-1] < statistics.mean(list_window)
+
+    def should_sell(self, prices: list[float], params: StrategyParameters) -> bool:
+        list_window = prices[-params.window_size :]
+        return prices[-1] > statistics.mean(list_window)
+
