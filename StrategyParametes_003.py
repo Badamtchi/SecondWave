@@ -73,3 +73,23 @@ class TradingBot:
             print(f"No action needed for {symbol}")
 
 
+def main() -> None:
+    """
+    Create an exchange and a trading bot with a strategy.
+    Run the strategy once on a particular symbol.
+    """
+
+    # create the exchange and connect to it
+    exchange = Exchange()
+    exchange.connect()
+
+    # create the trading strategy
+    trading_strategy = MinMaxTradingStrategy()
+
+    # create the trading bot and run the bot once
+    bot = TradingBot(exchange, trading_strategy)
+    bot.run("BTC/USD")
+
+
+if __name__ == "__main__":
+    main()
