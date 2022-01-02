@@ -17,6 +17,10 @@ class VehicleInfo:
             tax_percentage = 0.02
         return tax_percentage * self.catalogue_price
 
+    def print(self):
+        print(f"Brand: {self.brand}")
+        print(f"Payable tax: {self.compute_tax()}")
+
 class Vehicle:
     id: str
     license_plate: str
@@ -26,6 +30,11 @@ class Vehicle:
         self.id = id
         self.license_plate = license_plate
         self.info = info
+
+    def print(self):
+        print(f"ID: {self.id}")
+        print(f"Lisence plate: {self.license_plate}")
+        self.info.print()
 
 
 class VehicleRegistry:
@@ -60,13 +69,10 @@ class Application:
 
         #create a vehicle
         vehicle = registry.create_vehicle(brand)
+ 
+        #print out the vehicle registration information
+        vehicle.print()
 
-        # print out the vehicle registration information
-        print("Registration complete. Vehicle information:")
-        print(f"Brand: {brand}")
-        print(f"Id: {vehicle_id}")
-        print(f"License plate: {lisence_plate}")
-        print(f"Payable tax: {payable_tax}")
-
+        
 app = Application()
 app.register_vehicle("BMW 5")
