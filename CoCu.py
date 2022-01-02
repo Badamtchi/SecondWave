@@ -6,10 +6,27 @@ class VehicleInfo:
     catalogue_price: int
     electric: bool
 
+    def __init__(self, brand, electric, catalogue_price):
+        self.brand = brand
+        self.electric = electric
+        self.catalogue_price = catalogue_price
+
+    def compute_tax(self):
+        tax_percentage = 0.05
+        if self.electric:
+            tax_percentage = 0.02
+        return tax_percentage * self.catalogue_price
+
 class Vehicle:
     id: str
     license_plate: str
     info: VehicleInfo
+
+    def __init__(self, id, license_plate, info):
+        self.id = id
+        self.license_plate = license_plate
+        self.info = info
+
 
 class VehicleRegistry:
 
@@ -32,6 +49,7 @@ class VehicleRegistry:
     def create_vehicle(self, brand):
         vehicle_id = self.generate_vehicle_id(12)
         license_plate = self.generate_vehicle_licence(vehicle_id)
+        return Vehicle(vehicle_id, license_plate, self.vehicle_info[brand])
 
 
 class Application:
@@ -40,23 +58,8 @@ class Application:
         # create a registry instance
         registry = VehicleRegistry()
 
-
-        # compute the catalogue price
-        catalogue_price = 0
-        if brand == "Tesla Model 3":
-            catalogue_price = 60000
-        elif brand == "Volkswagen ID3":
-            catalogue_price = 35000
-        elif brand == "BMW 5":
-            catalogue_price = 45000
-
-        # compute the tax percentage (default 5% of the catalogue price, exept for electric cars where it is 2%)
-        tax_percentage = 0.05
-        if brand == "Tesla Model 3" or brand == "Volkswagen ID3":
-            tax_percentage = 0.02
-        
-        # compute the payable tax
-        payable_tax = tax_percentage * catalogue_price
+        #create a vehicle
+        vehicle = registry.create_vehicle(brand)
 
         # print out the vehicle registration information
         print("Registration complete. Vehicle information:")
